@@ -343,7 +343,7 @@ configure:5270: $? = 0
 configure:5306: result: (system)
 configure:5325: checking for library containing umem_cache_create
 configure:5356: gcc -o conftest -g -O2 -pthread -pthread   conftest.c -levent  >&5
-/usr/bin/ld: /tmp/ccuDl3HB.o: in function `main':
+/usr/bin/ld: /tmp/cc9AL342.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:33:(.text.startup+0x7): undefined reference to `umem_cache_create'
 collect2: error: ld returned 1 exit status
 configure:5356: $? = 1
@@ -428,7 +428,7 @@ configure: failed program was:
 configure:5373: result: no
 configure:5381: checking for library containing gethugepagesizes
 configure:5412: gcc -o conftest -g -O2 -pthread -pthread   conftest.c -levent  >&5
-/usr/bin/ld: /tmp/cc326KTp.o: in function `main':
+/usr/bin/ld: /tmp/ccRl6IbO.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:33:(.text.startup+0x7): undefined reference to `gethugepagesizes'
 collect2: error: ld returned 1 exit status
 configure:5412: $? = 1
@@ -672,7 +672,7 @@ conftest.c:38:18: warning: implicit declaration of function 'htonll'; did you me
    38 |           return htonll(0);
       |                  ^~~~~~
       |                  htonl
-/usr/bin/ld: /tmp/ccMTSLOh.o: in function `main':
+/usr/bin/ld: /tmp/cc0i6qAA.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:38:(.text.startup+0x5): undefined reference to `htonll'
 collect2: error: ld returned 1 exit status
 configure:5872: $? = 1
@@ -730,7 +730,7 @@ configure:5953: $? = 0
 configure:5953: result: yes
 configure:5964: checking for getpagesizes
 configure:5964: gcc -o conftest -g -O2 -pthread -pthread   conftest.c -levent  >&5
-/usr/bin/ld: /tmp/cc2xDfJs.o: in function `main':
+/usr/bin/ld: /tmp/ccOHRaAD.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:62:(.text.startup+0x7): undefined reference to `getpagesizes'
 collect2: error: ld returned 1 exit status
 configure:5964: $? = 1
@@ -803,7 +803,7 @@ configure: failed program was:
 configure:5964: result: no
 configure:5975: checking for memcntl
 configure:5975: gcc -o conftest -g -O2 -pthread -pthread   conftest.c -levent  >&5
-/usr/bin/ld: /tmp/ccYW1vc8.o: in function `main':
+/usr/bin/ld: /tmp/ccVwG2Eq.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:62:(.text.startup+0x7): undefined reference to `memcntl'
 collect2: error: ld returned 1 exit status
 configure:5975: $? = 1
@@ -952,7 +952,7 @@ configure:6089: $? = 0
 configure:6097: result: yes
 configure:6102: checking for setppriv
 configure:6102: gcc -o conftest -g -O2 -pthread -pthread   conftest.c -levent  >&5
-/usr/bin/ld: /tmp/ccrYA4ka.o: in function `main':
+/usr/bin/ld: /tmp/ccx3Zq6u.o: in function `main':
 /home/luka/Workspace/memcached-mult/conftest.c:66:(.text.startup+0x7): undefined reference to `setppriv'
 collect2: error: ld returned 1 exit status
 configure:6102: $? = 1

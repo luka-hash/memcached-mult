@@ -2989,7 +2989,7 @@ static void process_touch_command(conn *c, token_t *tokens, const size_t ntokens
     }
 }
 
-static void process_arithmetic_command(conn *c, token_t *tokens, const size_t ntokens, const bool incr) {
+static void process_arithmetic_command(conn *c, token_t *tokens, const size_t ntokens, const int opcode) {
     char temp[INCR_MAX_STORAGE_LEN];
     uint64_t delta;
     char *key;
@@ -3012,23 +3012,29 @@ static void process_arithmetic_command(conn *c, token_t *tokens, const size_t nt
         return;
     }
 
-    switch(add_delta(c, key, nkey, incr, delta, temp, NULL)) {
+    switch(add_delta(c, key, nkey, opcode, delta, temp, NULL)) {
     case OK:
         out_string(c, temp);
         break;
     case NON_NUMERIC:
-        out_string(c, "CLIENT_ERROR cannot increment or decrement non-numeric value");
+		if (opcode==2){
+			out_string(c, "CLIENT_ERROR cannot multiply non-numeric value");
+		}else {
+			out_string(c, "CLIENT_ERROR cannot increment or decrement non-numeric value");
+		}
         break;
     case EOM:
         out_string(c, "SERVER_ERROR out of memory");
         break;
     case DELTA_ITEM_NOT_FOUND:
         pthread_mutex_lock(&c->thread->stats.mutex);
-        if (incr) {
+        if (opcode == 1) {
             c->thread->stats.incr_misses++;
-        } else {
+        } else if (opcode == 0) {
             c->thread->stats.decr_misses++;
-        }
+        } else {
+			// c->thread->stats.mult_misses++;
+		}
         pthread_mutex_unlock(&c->thread->stats.mutex);
 
         out_string(c, "NOT_FOUND");
@@ -3050,7 +3056,7 @@ static void process_arithmetic_command(conn *c, token_t *tokens, const size_t nt
  * returns a response string to send back to the client.
  */
 enum delta_result_type do_add_delta(conn *c, const char *key, const size_t nkey,
-                                    const bool incr, const int64_t delta,
+                                    const int opcode, const int64_t delta,
                                     char *buf, uint64_t *cas,
                                     const uint32_t hv) {
     char *ptr;
@@ -3075,24 +3081,29 @@ enum delta_result_type do_add_delta(conn *c, const char *key, const size_t nkey,
         return NON_NUMERIC;
     }
 
-    if (incr) {
+    if (opcode==1) {
         value += delta;
         MEMCACHED_COMMAND_INCR(c->sfd, ITEM_key(it), it->nkey, value);
-    } else {
+    } else if (opcode==0) {
         if(delta > value) {
             value = 0;
         } else {
             value -= delta;
         }
         MEMCACHED_COMMAND_DECR(c->sfd, ITEM_key(it), it->nkey, value);
-    }
+    }else {
+		value *= delta;
+        MEMCACHED_COMMAND_MULT(c->sfd, ITEM_key(it), it->nkey, value);
+	}
 
     pthread_mutex_lock(&c->thread->stats.mutex);
-    if (incr) {
+    if (opcode==1) {
         c->thread->stats.slab_stats[it->slabs_clsid].incr_hits++;
-    } else {
+    } else if (opcode==0) {
         c->thread->stats.slab_stats[it->slabs_clsid].decr_hits++;
-    }
+    } else {
+        // c->thread->stats.slab_stats[it->slabs_clsid].mult_hits++;
+	}
     pthread_mutex_unlock(&c->thread->stats.mutex);
 
     snprintf(buf, INCR_MAX_STORAGE_LEN, "%llu", (unsigned long long)value);
@@ -3265,13 +3276,17 @@ static void process_command(conn *c, char *command) {
 
         process_arithmetic_command(c, tokens, ntokens, 1);
 
-    } else if (ntokens >= 3 && (strcmp(tokens[COMMAND_TOKEN].value, "gets") == 0)) {
-
-        process_get_command(c, tokens, ntokens, true);
-
     } else if ((ntokens == 4 || ntokens == 5) && (strcmp(tokens[COMMAND_TOKEN].value, "decr") == 0)) {
 
         process_arithmetic_command(c, tokens, ntokens, 0);
+
+    } else if ((ntokens == 4 || ntokens == 5) && (strcmp(tokens[COMMAND_TOKEN].value, "mult") == 0)) {
+
+        process_arithmetic_command(c, tokens, ntokens, 2);
+
+    } else if (ntokens >= 3 && (strcmp(tokens[COMMAND_TOKEN].value, "gets") == 0)) {
+
+        process_get_command(c, tokens, ntokens, true);
 
     } else if (ntokens >= 3 && ntokens <= 5 && (strcmp(tokens[COMMAND_TOKEN].value, "delete") == 0)) {
 

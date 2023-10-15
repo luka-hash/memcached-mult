@@ -74,15 +74,15 @@ am__installdirs = "$(DESTDIR)$(man1dir)"
 NROFF = nroff
 MANS = $(man_MANS)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run aclocal-1.11
-AMTAR = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run tar
-AUTOCONF = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run automake-1.11
+ACLOCAL = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run tar
+AUTOCONF = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run automake-1.11
 AWK = gawk
-CC = gcc -std=gnu99
+CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -pthread -pthread -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -fno-strict-aliasing
+CFLAGS = -g -O2 -pthread -pthread -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -93,10 +93,10 @@ DTRACEFLAGS =
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /bin/grep -E
+EGREP = /usr/bin/grep -E
 ENABLE_SASL = 
 EXEEXT = 
-GREP = /bin/grep
+GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -104,10 +104,10 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -levent -lrt 
+LIBS = -levent 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/dormando/p/danga/git/memcached/missing --run makeinfo
-MKDIR_P = /bin/mkdir -p
+MAKEINFO = ${SHELL} /home/luka/Workspace/memcached-mult/missing --run makeinfo
+MKDIR_P = /usr/bin/mkdir -p
 OBJEXT = o
 PACKAGE = memcached
 PACKAGE_BUGREPORT = memcached@googlegroups.com
@@ -121,15 +121,15 @@ PROFILER = /usr/bin/gcov
 PROFILER_FLAGS = -fprofile-arcs -ftest-coverage
 PROFILER_LDFLAGS = -lgcov
 SET_MAKE = 
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = 
 VERSION = 1.4.15
 XML2RFC = no
-XSLTPROC = /usr/bin/xsltproc
-abs_builddir = /home/dormando/p/danga/git/memcached/doc
-abs_srcdir = /home/dormando/p/danga/git/memcached/doc
-abs_top_builddir = /home/dormando/p/danga/git/memcached
-abs_top_srcdir = /home/dormando/p/danga/git/memcached
+XSLTPROC = no
+abs_builddir = /home/luka/Workspace/memcached-mult/doc
+abs_srcdir = /home/luka/Workspace/memcached-mult/doc
+abs_top_builddir = /home/luka/Workspace/memcached-mult
+abs_top_srcdir = /home/luka/Workspace/memcached-mult
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -156,13 +156,13 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/dormando/p/danga/git/memcached/install-sh
+install_sh = ${SHELL} /home/luka/Workspace/memcached-mult/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
 mandir = ${datarootdir}/man
-mkdir_p = /bin/mkdir -p
+mkdir_p = /usr/bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
 prefix = /usr/local
@@ -428,10 +428,10 @@ uninstall-man: uninstall-man1
 	no $< $@
 
 %.chk: %.xml xml2rfc/rfc2629-refchk.xsl
-	/usr/bin/xsltproc xml2rfc/rfc2629-refchk.xsl $< >$@
+	no xml2rfc/rfc2629-refchk.xsl $< >$@
 
 %.full: %.xml xml2rfc/rfc2629-noinc.xsl
-	/usr/bin/xsltproc xml2rfc/rfc2629-noinc.xsl $< >$@
+	no xml2rfc/rfc2629-noinc.xsl $< >$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
